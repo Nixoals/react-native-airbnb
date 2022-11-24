@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, MapCallout, Callout } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
@@ -47,12 +47,25 @@ export default function AroundMeScreen({ navigation }) {
 							<Marker
 								key={item._id}
 								coordinate={{ longitude: item.location[0], latitude: item.location[1] }}
-								title={item.title}
-								description={`${item.price} `}
-								onPress={() => {
-									navigation.navigate('Room', { id: item._id });
-								}}
-							></Marker>
+								// title={item.title}
+								// description={`${item.price} `}
+							>
+								<Callout
+									item={item}
+									onPress={() => {
+										navigation.navigate('Room', { id: item._id });
+									}}
+								>
+									<View key={item._id}>
+										<Image
+											style={{ height: 110, width: 150 }}
+											source={{ uri: item.photos[0].url }}
+										></Image>
+										<Text>{item.title}</Text>
+										<Text>{item.price} €</Text>
+									</View>
+								</Callout>
+							</Marker>
 						);
 					})}
 				</MapView>
